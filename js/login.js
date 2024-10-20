@@ -1,12 +1,13 @@
+
 // Cargar usuarios desde el archivo JSON
-fetch("../json/usuarios.json")
+fetch("usuarios.json")
     .then((resp) => resp.json())
     .then((data) => {
         nominaUsuarios = data.usuarios; // Accedemos al array de usuarios
     })
     .catch((error) => console.error('Error al cargar los usuarios:', error));
 
-let nominaUsuarios = [];
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('loginForm');
