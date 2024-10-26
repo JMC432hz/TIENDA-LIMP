@@ -1,4 +1,3 @@
-
 // Cargar usuarios desde el archivo JSON
 fetch("usuarios.json")
     .then((resp) => resp.json())
@@ -6,8 +5,6 @@ fetch("usuarios.json")
         nominaUsuarios = data.usuarios; // Accedemos al array de usuarios
     })
     .catch((error) => console.error('Error al cargar los usuarios:', error));
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('loginForm');
@@ -24,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (usuarioEncontrado) {
             errorMsg.textContent = '';
+            localStorage.setItem('usuarioActual', username); // Guardar el usuario actual
             // Redirigir a la nueva página tienda.html
             window.location.href = './pages/tienda.html';
         } else {
@@ -37,3 +35,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
