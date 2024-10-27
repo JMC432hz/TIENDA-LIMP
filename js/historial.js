@@ -10,15 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
         historialPedidos.forEach((pedido, index) => {
             const pedidoElem = document.createElement('div');
             pedidoElem.classList.add('pedido-item');
+            const totalCompra = pedido.resumenPedidos.reduce((acc, item) => acc + (item.totalPrecio || 0), 0);
+
             pedidoElem.innerHTML = `
                 <h3>Pedido ${index + 1}</h3>
                 <p>Fecha: ${pedido.fecha}</p>
-                <ul>
-                    ${pedido.resumenPedidos.map(item => `
-                        <li>${item.producto} - Cantidad: ${item.cantidad} (${item.umc}) - Total: $${item.totalPrecio.toFixed(2)}</li>
-                    `).join('')}
-                </ul>
+                <p>Total de la compra: $${totalCompra.toFixed(2)}</p>
+                <a href="detallepedido.html?pedido=${index}" class="ver-detalle-link">Ver detalle</a>
             `;
+
             historialContenedor.appendChild(pedidoElem);
         });
     }

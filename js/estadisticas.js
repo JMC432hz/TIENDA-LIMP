@@ -4,15 +4,18 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const productosSumatoria = {};
     const productosPorCategoria = {};
+    const fechasPorProducto = {};
 
-    // Recorrer cada pedido para sumar productos y categorizarlos
+    // Recorrer cada pedido para sumar productos y registrar fechas
     historialPedidos.forEach(pedido => {
         pedido.resumenPedidos.forEach(item => {
             // Sumatoria de productos
             if (productosSumatoria[item.producto]) {
                 productosSumatoria[item.producto] += item.cantidad;
+                fechasPorProducto[item.producto].push(new Date(pedido.fecha));
             } else {
                 productosSumatoria[item.producto] = item.cantidad;
+                fechasPorProducto[item.producto] = [new Date(pedido.fecha)];
             }
 
             // Verificar si la categoría existe y es válida
@@ -43,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoriasOrdenadas = Object.entries(productosPorCategoria)
         .sort(([, a], [, b]) => b - a); // Ordenar por cantidad (valor) de mayor a menor
 
-        
     // Mostrar la cantidad de productos por categoría ordenada
     const productosCategoriaContenedor = document.getElementById('productos-categoria');
     categoriasOrdenadas.forEach(([categoria, cantidad]) => {
@@ -51,30 +53,18 @@ document.addEventListener('DOMContentLoaded', () => {
         li.textContent = `${categoria}: ${cantidad} unidades compradas`;
         productosCategoriaContenedor.appendChild(li);
     });
-});
-function mostrarEstadisticas() {
-    const resumenContenedor = document.getElementById('resumenEstadisticas');
-    resumenContenedor.innerHTML = '';
 
-    // Cargar los pedidos confirmados del localStorage
-    const pedidosConfirmados = JSON.parse(localStorage.getItem('pedidoConfirmado')) || [];
+    // Calcular y mostrar el promedio de consumo por producto
+    const promedioContenedor = document.getElementById('promedio-productos');
+    Object.entries(fechasPorProducto).forEach(([producto, fechas]) => {
+        fechas.sort((a, b) => a - b); // Ordenar fechas de menor a mayor
+        const primerFecha = fechas[0];
+        const ultimaFecha = fechas[fechas.length - 1];
+        const diasTranscurridos = (ultimaFecha - primerFecha) / (1000 * 60 * 60 * 24) || 1; // Diferencia en días, evita división por cero
+        const promedio = (productosSumatoria[producto] / diasTranscurridos).toFixed(2);
 
-    // Crear un objeto para almacenar la cantidad total por categoría
-    const cantidadPorCategoria = {};
-
-    pedidosConfirmados.resumenPedidos.forEach(pedido => {
-        if (pedido.categoria) {
-            if (!cantidadPorCategoria[pedido.categoria]) {
-                cantidadPorCategoria[pedido.categoria] = 0;
-            }
-            cantidadPorCategoria[pedido.categoria] += pedido.cantidad;
-        }
+        const li = document.createElement('li');
+        li.textContent = `${producto}: ${promedio} unidades por día (desde ${primerFecha.toLocaleDateString()} hasta ${ultimaFecha.toLocaleDateString()})`;
+        promedioContenedor.appendChild(li);
     });
-
-    // Mostrar la cantidad de compras por categoría en el DOM
-    for (const [categoria, cantidad] of Object.entries(cantidadPorCategoria)) {
-        const estadisticaElem = document.createElement('p');
-        estadisticaElem.textContent = `${categoria}: ${cantidad} productos`;
-        resumenContenedor.append(estadisticaElem);
-    }
-}
+});

@@ -1,3 +1,4 @@
+// Cargar productos desde el archivo JSON
 fetch("../json/data.json")
     .then((resp) => resp.json())
     .then((data) => {
@@ -95,8 +96,16 @@ function mostrarProductos(productos) {
     contenedor.append(lista);
 }
 
-// Modificación de productos en el carrito
-// Modificación de productos en el carrito
+// Filtrado de productos por búsqueda
+function filtrarProductosPorBusqueda(event) {
+    const palabraBusqueda = event.target.value.toLowerCase();
+    const productosFiltrados = nominaProductos.filter(producto =>
+        producto.descripcion.toLowerCase().includes(palabraBusqueda) ||
+        producto.presentacion.toLowerCase().includes(palabraBusqueda)
+    );
+    mostrarProductos(productosFiltrados);
+}
+
 // Modificación de productos en el carrito
 function modificarProducto(productoSeleccionado, cantidad) {
     const pedidoExistente = resumenPedidos.find(pedido => pedido.producto === productoSeleccionado.descripcion);
@@ -114,8 +123,8 @@ function modificarProducto(productoSeleccionado, cantidad) {
             cantidad: cantidad,
             umc: productoSeleccionado.umc,
             totalPrecio: (cantidad / productoSeleccionado.umc) * productoSeleccionado.precioPorUmc,
-            imagen: productoSeleccionado.imagen, // Añadir la imagen del producto
-            categoria: productoSeleccionado.categoria // Añadir la categoría del producto
+            imagen: productoSeleccionado.imagen,
+            categoria: productoSeleccionado.categoria
         };
         resumenPedidos.push(nuevoPedido);
     }
@@ -123,7 +132,6 @@ function modificarProducto(productoSeleccionado, cantidad) {
     localStorage.setItem('carrito', JSON.stringify(resumenPedidos));
     mostrarResumenPedidos();
 }
-
 
 // Cargar carrito desde localStorage
 function cargarCarrito() {
@@ -149,6 +157,15 @@ function mostrarResumenPedidos() {
     precioFinalElem.textContent = `Total en su pedido: $${precioFinal.toFixed(2)}`;
     resumenContenedor.append(precioFinalElem);
 }
+
+// Evento de búsqueda
+document.querySelector('.form-control.me-2').addEventListener('input', filtrarProductosPorBusqueda);
+
+// Función para confirmar pedido
+// (Se mantiene sin cambios el resto del código de confirmación y vaciado del carrito)
+
+cargarCarrito();
+
 
 // Función para confirmar pedido
 document.getElementById('confirmarPedido').addEventListener('click', () => {
@@ -190,7 +207,7 @@ document.getElementById('confirmarPedido').addEventListener('click', () => {
                     title: "¡Pedido confirmado!",
                     text: "Redirigiendo al resumen de la compra...",
                     icon: "success",
-                    timer: 5000,
+                    timer: 4500,
                     showConfirmButton: false
                 }).then(() => {
                     window.open('../pages/pedidoconfirmado.html', '_blank');
@@ -203,7 +220,7 @@ document.getElementById('confirmarPedido').addEventListener('click', () => {
     }
 });
 
-//!-------------------------------------------------------------------------
+
 // Vaciar carrito
 document.getElementById('vaciarCarrito').addEventListener('click', () => {
     if (resumenPedidos.length === 0) {

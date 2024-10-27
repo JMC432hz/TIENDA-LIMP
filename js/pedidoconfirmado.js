@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const pedidoConfirmado = localStorage.getItem('pedidoConfirmado');
     const contenedor = document.getElementById('resumenPedidoConfirmado');
+    const botonImprimir = document.getElementById('imprimirCotizacion');
 
     if (pedidoConfirmado) {
         const datosPedido = JSON.parse(pedidoConfirmado);
@@ -16,13 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const pedidoElem = document.createElement('div');
             pedidoElem.classList.add('item-pedido');
 
-        // Añadir imagen del producto con validación simplificada
-        const imagenElem = document.createElement('img');
-        imagenElem.src = pedido.imagen ? pedido.imagen : '../img/default.jpg'; // Ruta a una imagen por defecto si no hay imagen
-        imagenElem.alt = pedido.producto || 'Producto';
-        imagenElem.classList.add('imagen-producto');
-
-
+            // Añadir imagen del producto con validación simplificada
+            const imagenElem = document.createElement('img');
+            imagenElem.src = pedido.imagen ? pedido.imagen : '../img/default.jpg'; // Ruta a una imagen por defecto si no hay imagen
+            imagenElem.alt = pedido.producto || 'Producto';
+            imagenElem.classList.add('imagen-producto');
 
             // Información del producto
             const infoElem = document.createElement('p');
@@ -44,4 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
         mensajeError.textContent = 'No se encontró ningún pedido confirmado.';
         contenedor.append(mensajeError);
     }
+
+    // Evento para imprimir la cotización
+    botonImprimir.addEventListener('click', () => {
+        window.print();
+    });
 });

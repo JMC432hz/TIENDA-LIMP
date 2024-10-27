@@ -385,3 +385,66 @@ p.total-compra {
 .boton-estadisticas:hover {
   background-color: #45a049;
 }
+
+/* Botones al pie del resumen */
+.botones-resumen {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  gap: 20px;
+}
+
+.boton-confirmar, .boton-imprimir {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.boton-confirmar {
+  background-color: #4CAF50;
+}
+
+.boton-confirmar:hover {
+  background-color: #45a049;
+}
+
+.boton-imprimir {
+  background-color: #2196F3;
+}
+
+.boton-imprimir:hover {
+  background-color: #1976D2;
+}
+
+.btn.btn-outline-success {
+  background: none; /* Elimina el fondo */
+  border: none; /* Elimina el borde */
+  font-size: 2rem; /* Ajusta el tamaño de fuente para aumentar el emoji */
+  padding: 0; /* Elimina el padding para que el emoji ocupe todo el espacio */
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem; /* Asegura que el botón ocupe todo el ancho disponible */
+  height: 2rem /* Asegura que el botón ocupe toda la altura disponible */
+}
+
+/* Estilos específicos para el botón solo-emoji */
+button.solo-emoji {
+  background: none; /* Elimina el fondo */
+  border: none; /* Elimina el borde */
+  padding: 0; /* Elimina el padding adicional */
+  font-size: 2rem; /* Ajusta el tamaño del emoji */
+  width: 2rem; /* Ajusta el ancho del botón */
+  height: 2rem; /* Ajusta la altura del botón */
+  cursor: pointer; /* Cambia el cursor a pointer */
+}
+
+button.solo-emoji:focus,
+button.solo-emoji:hover {
+  outline: none; /* Elimina el contorno al enfocar o al pasar el cursor */
+}
+
